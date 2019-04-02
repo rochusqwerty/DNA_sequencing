@@ -1,17 +1,17 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 
 public class Main {
 
-    public static void main(String[] args) {
+    static List<String> loadFileAsList(String[] args) {
         if (args.length != 1) {
             System.err.println("Invalid command line, exactly one argument required");
             System.exit(1);
         }
-
         List<String> list = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -21,9 +21,11 @@ public class Main {
             e.printStackTrace();
         }
 
+        return list;
+    }
 
+    static int[][] createMatrixWeight(List<String> list) {
         int[][] matrix = new int [list.size()][list.size()];
-
 
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size(); j++) {
@@ -38,13 +40,26 @@ public class Main {
                 }
             }
         }
+        return matrix;
+    }
 
+    static void printMatrix(int[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
                 System.out.print(matrix[i][j] + " ");
             }
             System.out.println();
         }
+
+    }
+
+    public static void main(String[] args) {
+
+        List<String> list = loadFileAsList(args);
+
+        int[][] matrix = createMatrixWeight(list);
+
+        printMatrix(matrix);
 
         //gen_alg
 
