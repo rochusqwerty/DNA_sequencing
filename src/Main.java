@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class Main {
-
+    public static int[][] matrix;
     static List<String> loadFileAsList(String[] args) {
         if (args.length != 1) {
             System.err.println("Invalid command line, exactly one argument required");
@@ -57,10 +57,10 @@ public class Main {
 
         List<String> list = loadFileAsList(args);
 
-        int[][] matrix = createMatrixWeight(list);
+        matrix = createMatrixWeight(list);
 
         printMatrix(matrix);
-
+        //FirstOrder -> create
         //gen_alg
 
     }
