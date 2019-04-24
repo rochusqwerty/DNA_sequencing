@@ -1,16 +1,18 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 public class Main {
     public static int[][] matrix;
-    static List<String> loadFileAsList(String[] args) {
+    public static List<String> list = new ArrayList<>();
+
+    static void loadFileAsList(String[] args) {
         if (args.length != 1) {
             System.err.println("Invalid command line, exactly one argument required");
             System.exit(1);
         }
-        List<String> list = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
             String line;
@@ -20,8 +22,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return list;
     }
 
     static int[][] createMatrixWeight(List<String> list) {
@@ -50,18 +50,34 @@ public class Main {
             }
             System.out.println();
         }
+    }
 
+    static void bestChromo( List<Chromosome> p){
+        System.out.print( "The best:");
+        for (Integer gen: p.get(0).list_gens) {
+            System.out.print(gen.toString() + ": " + list.get(gen));
+        }
     }
 
     public static void main(String[] args) {
-
-        List<String> list = loadFileAsList(args);
+        loadFileAsList(args);
+        List<Chromosome> population;
 
         matrix = createMatrixWeight(list);
 
         printMatrix(matrix);
-        //FirstOrder -> create
-        //gen_alg
+        FirstOrder first = new FirstOrder();
+        population = first.create();
+        for (int i=0; i<100; i++){  //do zmiany 100, warunek zakończenia
+            Mutation mut = new Mutation();
+            Crossover cross = new Crossover();
+            //population = mut.mutate(population);      //TO DO
+            //population = cross.cross(population);     //TO DO
+            for (Chromosome chromo: population) {
+                chromo.fitness_function();
+            }
+            Collections.sort(population);
+        }
 
     }
 }
