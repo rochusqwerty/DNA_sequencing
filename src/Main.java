@@ -7,6 +7,8 @@ import java.util.List;
 public class Main {
     public static int[][] matrix;
     public static List<String> list = new ArrayList<>();
+    public static List<Integer> listOfSimilarity = new ArrayList<>();
+
 
     static void loadFileAsList(String[] args) {
         if (args.length != 1) {
@@ -60,6 +62,20 @@ public class Main {
         }
     }
 
+    static List<List<Integer>>  createListOfSimilarity(int[][] matrix) {
+        List<List<Integer>> listOfSimilarity = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            List<Integer> insideList = new ArrayList<>();
+            for (int j = 0; j < matrix.length; j++) {
+                if (matrix[i][j] == 9) {
+                    insideList.add(j);
+                }
+            }
+            listOfSimilarity.add(insideList);
+        }
+        return listOfSimilarity;
+    }
+
     static void bestChromo( List<Chromosome> p){
         System.out.print( "The best:");
         for (Integer gen: p.get(0).list_gens) {
@@ -73,19 +89,23 @@ public class Main {
 
         matrix = createMatrixWeight(list);
 
-        printMatrix(matrix);
-        FirstOrder first = new FirstOrder();
-        population = first.create();
+        //printMatrix(matrix);
+
+        createListOfSimilarity(matrix);
+        //FirstOrder first = new FirstOrder();
+       // population = first.create();
         for (int i=0; i<100; i++){  //do zmiany 100, warunek zakończenia
             Mutation mut = new Mutation();
             Crossover cross = new Crossover();
             //population = mut.mutate(population);      //TO DO
             //population = cross.cross(population);     //TO DO
-            for (Chromosome chromo: population) {
-                chromo.fitness_function();
-            }
-            Collections.sort(population);
+           // for (Chromosome chromo: population) {
+             //   chromo.fitness_function();
+            //}
+           // Collections.sort(population);
         }
 
     }
+
+
 }
