@@ -5,8 +5,16 @@ public class Chromosome implements Comparable<Chromosome>{
     List<Integer> list_gens;
     Integer fitness_score;
 
+    public List<Integer> getList_gens() {
+        return list_gens;
+    }
+
+    public Integer getFitness_score() {
+        return fitness_score;
+    }
+
     public Chromosome() {
-        this.list_gens = null;
+        this.list_gens = new ArrayList<>();
         this.fitness_score = 0;
     }
 

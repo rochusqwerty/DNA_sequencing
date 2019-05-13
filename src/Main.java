@@ -31,22 +31,26 @@ public class Main {
 
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size(); j++) {
-                String l = list.get(i);
-                String l2 = list.get(j);
-                if (l.substring(0, 9).equals(l2.substring(1, 10))) {
+                String l = list.get(j);
+                String l2 = list.get(i);
+                if (l.substring(0, 9).equals(l2.substring(1))) {
                     matrix[i][j] = 9;
-                } else if (l.substring(0, 8).equals(l2.substring(1))) {
+                } else if (l.substring(0, 8).equals(l2.substring(2))) {
                     matrix[i][j] = 8;
-                } else if (l.substring(0, 7).equals(l2.substring(2))) {
+                } else if (l.substring(0, 7).equals(l2.substring(3))) {
                     matrix[i][j] = 7;
-                } else if (l.substring(0, 6).equals(l2.substring(3))) {
+                } else if (l.substring(0, 6).equals(l2.substring(4))) {
                     matrix[i][j] = 6;
-                } else if (l.substring(0, 5).equals(l2.substring(4))) {
+                } else if (l.substring(0, 5).equals(l2.substring(5))) {
                     matrix[i][j] = 5;
-                } else if (l.substring(0, 4).equals(l2.substring(5))) {
+                } else if (l.substring(0, 4).equals(l2.substring(6))) {
                     matrix[i][j] = 4;
-                } else if (l.substring(0, 3).equals(l2.substring(6))) {
+                } else if (l.substring(0, 3).equals(l2.substring(7))) {
                     matrix[i][j] = 3;
+                } else if (l.substring(0, 2).equals(l2.substring(8))) {
+                    matrix[i][j] = 2;
+                } else if (l.substring(0, 1).equals(l2.substring(9))) {
+                    matrix[i][j] = 1;
                 }
             }
         }
@@ -83,6 +87,17 @@ public class Main {
         }
     }
 
+    static void summary( List<Chromosome> p) {
+        System.out.println("Size of population: " + p.size());
+        for (Integer gen : p.get(0).list_gens) {
+            System.out.println(gen.toString() + ": " + list.get(gen));
+        }
+        System.out.println("Drugi");
+        for (Integer gen : p.get(1).list_gens) {
+            System.out.println(gen.toString() + ": " + list.get(gen));
+        }
+    }
+
     public static void main(String[] args) {
         loadFileAsList(args);
         List<Chromosome> population;
@@ -92,18 +107,20 @@ public class Main {
         //printMatrix(matrix);
 
         createListOfSimilarity(matrix);
-        //FirstOrder first = new FirstOrder();
-       // population = first.create();
+        System.out.println("FirstOrder");
+        FirstOrder first = new FirstOrder();
+        population = first.create();
         for (int i=0; i<100; i++){  //do zmiany 100, warunek zakończenia
             Mutation mut = new Mutation();
-            Crossover cross = new Crossover();
+            Crossover cross = new Crossover(population);
+            population = cross.cross();
             //population = mut.mutate(population);      //TO DO
-            //population = cross.cross(population);     //TO DO
-           // for (Chromosome chromo: population) {
-             //   chromo.fitness_function();
-            //}
-           // Collections.sort(population);
+            for (Chromosome chromo: population) {
+                chromo.fitness_function();
+            }
+            Collections.sort(population);
         }
+        summary(population);
 
     }
 
