@@ -33,20 +33,24 @@ public class Main {
             for (int j = 0; j < list.size(); j++) {
                 String l = list.get(i);
                 String l2 = list.get(j);
-                if (l.substring(0, 9).equals(l2.substring(1, 10))) {
+                if (l.substring(0, 9).equals(l2.substring(1))) {
                     matrix[i][j] = 9;
-                } else if (l.substring(0, 8).equals(l2.substring(1))) {
+                } else if (l.substring(0, 8).equals(l2.substring(2))) {
                     matrix[i][j] = 8;
-                } else if (l.substring(0, 7).equals(l2.substring(2))) {
+                } else if (l.substring(0, 7).equals(l2.substring(3))) {
                     matrix[i][j] = 7;
-                } else if (l.substring(0, 6).equals(l2.substring(3))) {
+                } else if (l.substring(0, 6).equals(l2.substring(4))) {
                     matrix[i][j] = 6;
-                } else if (l.substring(0, 5).equals(l2.substring(4))) {
+                } else if (l.substring(0, 5).equals(l2.substring(5))) {
                     matrix[i][j] = 5;
-                } else if (l.substring(0, 4).equals(l2.substring(5))) {
+                } else if (l.substring(0, 4).equals(l2.substring(6))) {
                     matrix[i][j] = 4;
-                } else if (l.substring(0, 3).equals(l2.substring(6))) {
+                } else if (l.substring(0, 3).equals(l2.substring(7))) {
                     matrix[i][j] = 3;
+                } else if (l.substring(0, 2).equals(l2.substring(8))) {
+                    matrix[i][j] = 2;
+                } else if (l.substring(0, 1).equals(l2.substring(9))) {
+                    matrix[i][j] = 1;
                 }
             }
         }
