@@ -33,9 +33,9 @@ public class Crossover {
                 }
                 chromo2 = listIn.get(randomNum1).getList_gens().stream().collect(Collectors.toList());
 
-                steps = (int) (chromo2.size()-1 * 0.5);
+                steps = (int) (chromo2.size()-1);
                 middle1 = chromo2.size() / 2;
-                if((chromo2.size() > 5) && (chromo1.size() > 5)) {
+                if((chromo2.size() > 2) && (chromo1.size() > 2)) {
                     for (int q = 0; q < steps; q++) {
                         System.out.println("Dane");
                         System.out.println(chromo1.size());
@@ -53,7 +53,7 @@ public class Crossover {
                             newList = newList.subList(0, middle);
                             newList2 = chromo2.stream().collect(Collectors.toList());
                             newList2 = newList2.subList(index, chromo2.size());
-                            newList2.addAll(newList2);
+                            newList.addAll(newList2);
                             if (!newList.isEmpty()) {
                                 newChromo.setList_gens(newList2);
                                 listOut.add(newChromo);
@@ -65,7 +65,7 @@ public class Crossover {
                             newList = newList.subList(0, index);
                             newList2 = chromo1.stream().collect(Collectors.toList());
                             newList2 = newList2.subList(middle, chromo1.size());
-                            newList2.addAll(newList2);
+                            newList.addAll(newList2);
                             if (!newList.isEmpty()) {
                                 newChromo.setList_gens(newList2);
                                 listOut.add(newChromo);
