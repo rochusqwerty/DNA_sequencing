@@ -119,6 +119,8 @@ public class Main {
                 chromo.fitness_function();
             }
             Collections.sort(population);
+            if(population.size() > 100)
+                population.subList(0, 100).clear();
         }
         summary(population);
 

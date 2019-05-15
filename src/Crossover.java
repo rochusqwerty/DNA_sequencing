@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Crossover {
     List<Chromosome> listIn;
     List<Chromosome> listOut = new ArrayList<>();
-    int min = 0, max, randomNum, randomNum1, steps, sample = 5, middle=0, middle1;
+    int min = 0, max, randomNum, randomNum1, steps, sample = 5, middle=0, middle1, index;
     float bound = 0.2f;
     List<Integer> chromo1 = new ArrayList<>(), chromo2 = new ArrayList<>(), newList = new ArrayList<>();
     boolean ans;
@@ -20,7 +20,9 @@ public class Crossover {
         bound *= (float) max;
         for(int i = 0; i< bound; i++){
             randomNum = ThreadLocalRandom.current().nextInt(min, max);
-            chromo1 = listIn.get(randomNum).getList_gens();
+            chromo1.clear();
+            chromo2.clear();
+            chromo1.addAll(listIn.get(randomNum).getList_gens());
             middle = chromo1.size() / 2;
             while(sample > 0){
                 sample--;
@@ -39,7 +41,7 @@ public class Crossover {
                         System.out.println(middle);
                         System.out.println(chromo2.size());
                         System.out.println(middle1);
-                        int index = middle1 + (q % 2 == 0 ? q / 2 : -(q / 2 + 1));
+                        index = middle1 + (q % 2 == 0 ? q / 2 : -(q / 2 + 1));
 
                         if (chromo1.get(middle).equals(chromo2.get(index))) {
                             sample = 0;
@@ -47,11 +49,12 @@ public class Crossover {
                             System.out.println("Ch1: " + chromo1.size());
                             newChromo = new Chromosome();
                             newList.clear();
-                            newList = chromo1.subList(0, middle);
+                            newList.addAll(chromo1);
+                            newList = newList.subList(0,middle);
                             //newList.addAll(chromo2.subList(index, chromo2.size()));
                             if (!newList.isEmpty()) {
                                 System.out.println("Ch1: " + chromo1.size());
-                                newChromo.list_gens = newList;
+                                newChromo.setList_gens(newList);
                                 //listOut.add(newChromo);
                             }
                             System.out.println("Ch1: " + chromo1.size());
@@ -62,7 +65,7 @@ public class Crossover {
                             newList.addAll(chromo1.subList(middle, chromo1.size()));
                             if (!newList.isEmpty()) {
                                 System.out.println("Ch2: " + chromo1.size());
-                                newChromo.list_gens = newList;
+                                newChromo.setList_gens(newList);
                                 listOut.add(newChromo);
                             }
                         }

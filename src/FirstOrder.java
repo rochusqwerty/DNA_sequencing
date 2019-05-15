@@ -30,7 +30,7 @@ public class FirstOrder {
                 }
                 if(chromo.list_gens.size()>0) {
                     list.add(chromo);
-                    System.out.println(chromo.list_gens);
+                    //System.out.println(chromo.list_gens);
                 }
 
             }
