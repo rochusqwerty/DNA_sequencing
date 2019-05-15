@@ -7,7 +7,7 @@ import java.util.List;
 public class Main {
     public static int[][] matrix;
     public static List<String> list = new ArrayList<>();
-    public static List<Integer> listOfSimilarity = new ArrayList<>();
+    public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
 
 
     static void loadFileAsList(String[] args) {
@@ -67,7 +67,6 @@ public class Main {
     }
 
     static List<List<Integer>>  createListOfSimilarity(int[][] matrix) {
-        List<List<Integer>> listOfSimilarity = new ArrayList<>();
         for (int i = 0; i < matrix.length; i++) {
             List<Integer> insideList = new ArrayList<>();
             for (int j = 0; j < matrix.length; j++) {
@@ -110,7 +109,8 @@ public class Main {
         System.out.println("FirstOrder");
         FirstOrder first = new FirstOrder();
         population = first.create();
-        for (int i=0; i<100; i++){  //do zmiany 100, warunek zakończenia
+
+        for (int i=0; i<10; i++){  //do zmiany 100, warunek zakończenia
             Mutation mut = new Mutation();
             Crossover cross = new Crossover(population);
             population = cross.cross();
@@ -123,7 +123,6 @@ public class Main {
                 population.subList(0, 100).clear();
         }
         summary(population);
-
     }
 
 
