@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class Crossover {
     List<Chromosome> listIn;
     List<Chromosome> listOut = new ArrayList<>();
     int min = 0, max, randomNum, randomNum1, steps, sample = 5, middle=0, middle1, index;
     float bound = 0.2f;
-    List<Integer> chromo1 = new ArrayList<>(), chromo2 = new ArrayList<>(), newList = new ArrayList<>();
+    List<Integer> chromo1 = new ArrayList<>(), chromo2 = new ArrayList<>(), newList = new ArrayList<>(), newList2 = new ArrayList<>();
     boolean ans;
     Chromosome newChromo;
 
@@ -49,8 +50,8 @@ public class Crossover {
                             System.out.println("Ch1: " + chromo1.size());
                             newChromo = new Chromosome();
                             newList.clear();
-                            newList.addAll(chromo1);
-                            newList = newList.subList(0,middle);
+                            newList = chromo1.stream().collect(Collectors.toList());
+                            newList = newList.subList(0, middle);
                             //newList.addAll(chromo2.subList(index, chromo2.size()));
                             if (!newList.isEmpty()) {
                                 System.out.println("Ch1: " + chromo1.size());
@@ -61,8 +62,14 @@ public class Crossover {
 
                             newChromo = new Chromosome();
                             newList.clear();
-                            newList = chromo2.subList(0, index);
-                            newList.addAll(chromo1.subList(middle, chromo1.size()));
+                            newList = chromo2.stream().collect(Collectors.toList());
+
+                            newList = newList.subList(0, index);
+
+                            newList2 = chromo1.stream().collect(Collectors.toList());
+                            newList2 = newList2.subList(middle, chromo1.size());
+
+                            newList.addAll(newList2);
                             if (!newList.isEmpty()) {
                                 System.out.println("Ch2: " + chromo1.size());
                                 newChromo.setList_gens(newList);
