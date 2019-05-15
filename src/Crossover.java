@@ -47,32 +47,27 @@ public class Crossover {
                         if (chromo1.get(middle).equals(chromo2.get(index))) {
                             sample = 0;
 
-                            System.out.println("Ch1: " + chromo1.size());
                             newChromo = new Chromosome();
                             newList.clear();
                             newList = chromo1.stream().collect(Collectors.toList());
                             newList = newList.subList(0, middle);
-                            //newList.addAll(chromo2.subList(index, chromo2.size()));
+                            newList2 = chromo2.stream().collect(Collectors.toList());
+                            newList2 = newList2.subList(index, chromo2.size());
+                            newList2.addAll(newList2);
                             if (!newList.isEmpty()) {
-                                System.out.println("Ch1: " + chromo1.size());
-                                newChromo.setList_gens(newList);
-                                //listOut.add(newChromo);
+                                newChromo.setList_gens(newList2);
+                                listOut.add(newChromo);
                             }
-                            System.out.println("Ch1: " + chromo1.size());
 
                             newChromo = new Chromosome();
                             newList.clear();
                             newList = chromo2.stream().collect(Collectors.toList());
-
                             newList = newList.subList(0, index);
-
                             newList2 = chromo1.stream().collect(Collectors.toList());
                             newList2 = newList2.subList(middle, chromo1.size());
-
-                            newList.addAll(newList2);
+                            newList2.addAll(newList2);
                             if (!newList.isEmpty()) {
-                                System.out.println("Ch2: " + chromo1.size());
-                                newChromo.setList_gens(newList);
+                                newChromo.setList_gens(newList2);
                                 listOut.add(newChromo);
                             }
                         }
