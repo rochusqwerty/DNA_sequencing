@@ -36,6 +36,6 @@ public class Chromosome implements Comparable<Chromosome>{
 
     @Override
     public int compareTo(Chromosome o) {
-        return this.fitness_score.compareTo(o.fitness_score);
+        return o.fitness_score.compareTo(this.fitness_score);
     }
 }
