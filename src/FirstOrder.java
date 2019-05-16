@@ -30,18 +30,19 @@ public class FirstOrder {
                 }
                 if(chromo.list_gens.size()>0) {
                     list.add(chromo);
-                    //System.out.println(chromo.list_gens);
                 }
 
             }
         }
-        System.out.println("Return");
         return list;
     }
 
     Integer takeNext(Integer current){
         for (int j = 0; j < Main.matrix[0].length; j++) {
             if(Main.matrix[current][j]==9) return j;
+        }
+        for (int j = 0; j < Main.matrix[0].length; j++) {
+            if(Main.matrix[current][j]==8) return j;
         }
         return -1;
     }
