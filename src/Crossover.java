@@ -62,7 +62,6 @@ public class Crossover {
 
                             addToListOut(chromo1, chromo2);
                             addToListOut(chromo2, chromo1);
-
                         }
                     }
                 }

@@ -88,10 +88,11 @@ public class Main {
 
     static void summary( List<Chromosome> p) {
         System.out.println("Size of population: " + p.size());
+        System.out.println("First: " + p.get(0).list_gens.size());
         for (Integer gen : p.get(0).list_gens) {
             System.out.println(gen.toString() + ": " + list.get(gen));
         }
-        System.out.println("Drugi");
+        System.out.println("Second: " + p.get(1).list_gens.size());
         for (Integer gen : p.get(1).list_gens) {
             System.out.println(gen.toString() + ": " + list.get(gen));
         }
@@ -109,7 +110,6 @@ public class Main {
         System.out.println("FirstOrder");
         FirstOrder first = new FirstOrder();
         population = first.create();
-
         for (int i=0; i<10; i++){  //do zmiany 100, warunek zakończenia
             Mutation mut = new Mutation();
             Crossover cross = new Crossover(population);
