@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class Crossover {
     List<Chromosome> listIn;
@@ -23,7 +22,7 @@ public class Crossover {
             randomNum = ThreadLocalRandom.current().nextInt(min, max);
             chromo1.clear();
             chromo2.clear();
-            chromo1 = listIn.get(randomNum).getList_gens().stream().collect(Collectors.toList());
+            chromo1 = new ArrayList<>(listIn.get(randomNum).getList_gens());
             middle = chromo1.size() / 2;
             while(sample > 0){
                 sample--;
@@ -31,7 +30,7 @@ public class Crossover {
                 while(randomNum == randomNum1){
                     randomNum1 = ThreadLocalRandom.current().nextInt(min, max);
                 }
-                chromo2 = listIn.get(randomNum1).getList_gens().stream().collect(Collectors.toList());
+                chromo2 = new ArrayList<>(listIn.get(randomNum1).getList_gens());
 
                 steps = (int) (chromo2.size()-1);
                 middle1 = chromo2.size() / 2;
@@ -49,9 +48,9 @@ public class Crossover {
 
                             newChromo = new Chromosome();
                             newList.clear();
-                            newList = chromo1.stream().collect(Collectors.toList());
+                            newList = new ArrayList<>(chromo1);
                             newList = newList.subList(0, middle);
-                            newList2 = chromo2.stream().collect(Collectors.toList());
+                            newList2 = new ArrayList<>(chromo2);
                             newList2 = newList2.subList(index, chromo2.size());
                             newList.addAll(newList2);
                             if (!newList.isEmpty()) {
@@ -61,9 +60,9 @@ public class Crossover {
 
                             newChromo = new Chromosome();
                             newList.clear();
-                            newList = chromo2.stream().collect(Collectors.toList());
+                            newList = new ArrayList<>(chromo2);
                             newList = newList.subList(0, index);
-                            newList2 = chromo1.stream().collect(Collectors.toList());
+                            newList2 = new ArrayList<>(chromo1);
                             newList2 = newList2.subList(middle, chromo1.size());
                             newList.addAll(newList2);
                             if (!newList.isEmpty()) {
