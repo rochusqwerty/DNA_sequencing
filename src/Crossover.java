@@ -17,11 +17,20 @@ public class Crossover {
 
     public void addToListOut(List<Integer> chromo1, List<Integer> chromo2) {
         newChromo = new Chromosome();
-        newList.clear();
         newList = new ArrayList<>(chromo1);
         newList = newList.subList(0, middle);
         newList2 = new ArrayList<>(chromo2);
         newList2 = newList2.subList(index, chromo2.size());
+        newList.addAll(newList2);
+        if (!newList.isEmpty()) {
+            newChromo.setList_gens(newList2);
+            listOut.add(newChromo);
+        }
+        newChromo = new Chromosome();
+        newList = new ArrayList<>(chromo2);
+        newList = newList.subList(0, index);
+        newList2 = new ArrayList<>(chromo1);
+        newList2 = newList2.subList(middle, chromo1.size());
         newList.addAll(newList2);
         if (!newList.isEmpty()) {
             newChromo.setList_gens(newList2);
@@ -58,7 +67,6 @@ public class Crossover {
                             sample = 0;
 
                             addToListOut(chromo1, chromo2);
-                            addToListOut(chromo2, chromo1);
                         }
                     }
                 }
