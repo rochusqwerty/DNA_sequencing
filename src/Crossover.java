@@ -15,6 +15,20 @@ public class Crossover {
         this.listIn = list;
     }
 
+    public void addToListOut(List<Integer> chromo1, List<Integer> chromo2) {
+        newChromo = new Chromosome();
+        newList.clear();
+        newList = new ArrayList<>(chromo1);
+        newList = newList.subList(0, middle);
+        newList2 = new ArrayList<>(chromo2);
+        newList2 = newList2.subList(index, chromo2.size());
+        newList.addAll(newList2);
+        if (!newList.isEmpty()) {
+            newChromo.setList_gens(newList2);
+            listOut.add(newChromo);
+        }
+    }
+
     List<Chromosome> cross(){
         max = listIn.size();
         bound *= (float) max;
@@ -34,38 +48,17 @@ public class Crossover {
                 }
                 chromo2 = new ArrayList<>(listIn.get(randomNum1).getList_gens());
 
-                //dopasowanie miejsca cięcia drugiego
-                steps = (int) (chromo2.size()-1);
+                steps = (int) (chromo2.size()-1 * 0.5);
                 middle1 = chromo2.size() / 2;
-                if((chromo2.size() > 2) && (chromo1.size() > 2)) {
+                if((chromo2.size() > 5) && (chromo1.size() > 5)) {
                     for (int q = 0; q < steps; q++) {
                         index = middle1 + (q % 2 == 0 ? q / 2 : -(q / 2 + 1));
 
                         if (chromo1.get(middle).equals(chromo2.get(index))) {
                             sample = 0;
 
-                            newChromo = new Chromosome();
-                            newList = new ArrayList<>(chromo1);
-                            newList = newList.subList(0, middle);
-                            newList2 = new ArrayList<>(chromo2);
-                            newList2 = newList2.subList(index, chromo2.size());
-                            newList.addAll(newList2);
-                            if (!newList.isEmpty()) {
-                                newChromo.setList_gens(newList2);
-                                listOut.add(newChromo);
-                            }
-
-                            newChromo = new Chromosome();
-                            newList.clear();
-                            newList = new ArrayList<>(chromo2);
-                            newList = newList.subList(0, index);
-                            newList2 = new ArrayList<>(chromo1);
-                            newList2 = newList2.subList(middle, chromo1.size());
-                            newList.addAll(newList2);
-                            if (!newList.isEmpty()) {
-                                newChromo.setList_gens(newList2);
-                                listOut.add(newChromo);
-                            }
+                            addToListOut(chromo1, chromo2);
+                            addToListOut(chromo2, chromo1);
                         }
                     }
                 }
