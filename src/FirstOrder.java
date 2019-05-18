@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class FirstOrder {
     List<Chromosome> list = new ArrayList<>();
     List<Integer> start = new ArrayList<>();
+    int size = 0;
 
     FirstOrder(){
     }
@@ -12,7 +14,6 @@ public class FirstOrder {
         //flagi ustawione na 1 - do odwiedzenia
         for (int i = 0; i < Main.matrix[0].length; i++)
             start.add(1);
-
         //przeszukiwanie
         int gen;
         Chromosome chromo;
@@ -31,9 +32,50 @@ public class FirstOrder {
                 if(chromo.list_gens.size()>0) {
                     list.add(chromo);
                 }
-
             }
         }
+        return list;
+    }
+
+    List<Chromosome> create2(){
+        //flagi ustawione na 1 - do odwiedzenia
+        for (int i = 0; i < Main.matrix[0].length; i++)
+            start.add(1);
+        //przeszukiwanie
+        int gen;
+        Chromosome chromo;
+        for(int k = 0; k < Main.sizeOfPopulation; k++) {
+            chromo = new Chromosome();
+            size = 9;
+            for (int i = 0; i < Main.matrix[0].length && size < Main.sizeOfSequence; i++) {
+                if (start.get(i) != 0) {
+                    gen = i;
+                    start.set(gen, 0);
+                    chromo.add(gen);
+                    while (size < Main.sizeOfSequence) {
+                        gen = takeNext2(gen);
+                        chromo.add(gen);
+                    }
+                    System.out.println(chromo.size());
+                    //list.add(chromo);
+                }
+            }
+            Random randomGenerator = new Random();
+            while (size < Main.sizeOfSequence) {
+                gen = randomGenerator.nextInt(Main.matrix[0].length);
+                chromo.add(gen);
+                gen = takeNext2(gen);
+                while (gen >= 0 && size < Main.sizeOfSequence) {
+                    chromo.add(gen);
+                    gen = takeNext2(gen);
+                }
+            }
+            if (1 <= Main.sizeOfSequence) {
+                list.add(chromo);
+                size = 9;
+            }
+        }
+        System.out.println("Rozmiar listy: " + list.size());
         return list;
     }
 
@@ -45,6 +87,24 @@ public class FirstOrder {
             if(Main.matrix[current][j]==8) return j;
         }
         return -1;
+    }
+
+    Integer takeNext2(Integer current){
+        List<Integer> choice = new ArrayList<>();
+        Random randomGenerator = new Random();
+        int randomInt = 0;
+        for (int i = 9; i > 0; i--) {
+            for (int j = 0; j < Main.matrix[0].length; j++) {
+                if(Main.matrix[current][j]==i)choice.add(j);
+            }
+            if (!choice.isEmpty()){
+                randomInt = randomGenerator.nextInt(choice.size());
+                size += 10-i;
+                return choice.get(randomInt);
+            }
+        }
+        size += 10;
+        return randomGenerator.nextInt(Main.matrix[0].length);
     }
 
 }
