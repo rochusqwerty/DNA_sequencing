@@ -4,6 +4,7 @@ import java.util.List;
 public class Chromosome implements Comparable<Chromosome>{
     List<Integer> list_gens;
     Integer fitness_score;
+    String genes;
 
     public List<Integer> getList_gens() {
         return list_gens;
@@ -22,11 +23,14 @@ public class Chromosome implements Comparable<Chromosome>{
         this.fitness_score = 0;
     }
 
+    public Integer size(){
+        return list_gens.size();
+    }
+
     void fitness_function(){
         fitness_score = 0;
-        System.out.println("Size: " + list_gens.size());
         for (int i = 1; i < list_gens.size(); i++) {
-            fitness_score += Main.matrix[i-1][i];
+            fitness_score += Main.matrix[list_gens.get(i-1)][list_gens.get(i)];
         }
     }
 
