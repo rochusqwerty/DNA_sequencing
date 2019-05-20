@@ -63,7 +63,7 @@ public class FirstOrder {
                 gen = randomGenerator.nextInt(Main.matrix[0].length);
                 chromo.add(gen);
                 gen = takeNext2(gen);
-                while (gen >= 0 && size < Main.sizeOfSequence) {
+                while (size < Main.sizeOfSequence) {
                     chromo.add(gen);
                     gen = takeNext2(gen);
                 }
