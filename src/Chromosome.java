@@ -11,6 +11,9 @@ public class Chromosome implements Comparable<Chromosome>{
     public List<Integer> getList_gens() {
         return list_gens;
     }
+    public String getSequence() {
+        return sequence;
+    }
 
     public void setList_gens(List<Integer> list_gens) {
         this.list_gens = list_gens;
@@ -28,6 +31,9 @@ public class Chromosome implements Comparable<Chromosome>{
 
     public Chromosome(String sequence) {
         this.sequence = sequence;
+        this.list_gens = new ArrayList<>();
+        this.fitness_score = 0;
+        this.numberOfUses = new int[Main.list.size()];
         calculate_list_gens();
         fix();
     }

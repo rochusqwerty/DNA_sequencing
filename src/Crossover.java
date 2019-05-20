@@ -5,85 +5,65 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Crossover {
     List<Chromosome> listIn;
     List<Chromosome> listOut = new ArrayList<>();
-    int min = 0, max, randomNum, randomNum1, steps, sample = 5, middle=0, middle1, index;
+    int min = 0, max;
     float bound = 0.2f;
-    List<Integer> chromo1 = new ArrayList<>(), chromo2 = new ArrayList<>(), newList = new ArrayList<>(), newList2 = new ArrayList<>();
-    boolean ans;
-    Chromosome newChromo;
+    int start, end, randomIndex, randomchromo1, randomchromo2, lenOfSub1, lenOfSub2;
+    String chromo1, chromo2, subchromo1, subchromo2, res;
+    Chromosome chromoOut1, chromoOut2;;
 
     Crossover(List<Chromosome> list){
         this.listIn = list;
     }
 
-    public void addToListOut(List<Integer> chromo1, List<Integer> chromo2) {
-        newChromo = new Chromosome();
-        newList = new ArrayList<>(chromo1);
-        newList = newList.subList(0, middle);
-        newList2 = new ArrayList<>(chromo2);
-        newList2 = newList2.subList(index, chromo2.size());
-        newList.addAll(newList2);
-        if (!newList.isEmpty()) {
-            newChromo.setList_gens(newList2);
-            listOut.add(newChromo);
-        }
-        newChromo = new Chromosome();
-        newList = new ArrayList<>(chromo2);
-        newList = newList.subList(0, index);
-        newList2 = new ArrayList<>(chromo1);
-        newList2 = newList2.subList(middle, chromo1.size());
-        newList.addAll(newList2);
-        if (!newList.isEmpty()) {
-            newChromo.setList_gens(newList2);
-            listOut.add(newChromo);
-        }
-    }
-
     List<Chromosome> cross(){
-        max = listIn.size();
+        max = Main.sizeOfSequence;
         bound *= (float) max;
-        for(int i = 0; i< bound; i++){
-            //wybór pierwszego
-            randomNum = ThreadLocalRandom.current().nextInt(min, max);
-            chromo1 = new ArrayList<>(listIn.get(randomNum).getList_gens());
-            //wybór środkowego elementu
-            middle = chromo1.size() / 2;
-            sample = 5; //TODO def parametrów w main
-            while(sample > 0){
-                sample--;
-                //wybór drugiego`
-                randomNum1 = ThreadLocalRandom.current().nextInt(min, max);
-                while(randomNum == randomNum1){
-                    randomNum1 = ThreadLocalRandom.current().nextInt(min, max);
-                }
-                chromo2 = new ArrayList<>(listIn.get(randomNum1).getList_gens());
+        for(int i = 0; i < bound; i++){
+            System.out.println((int)(Main.sizeOfPopulation));
+            System.out.println(bound);
+            randomchromo1 = ThreadLocalRandom.current().nextInt(min, max);
+            chromo1 = listIn.get(randomchromo1).getSequence();
 
-                steps = (int) (chromo2.size()-1 * 0.5);
-                middle1 = chromo2.size() / 2;
-                if((chromo2.size() > 5) && (chromo1.size() > 5)) {
-                    for (int q = 0; q < steps; q++) {
-                        index = middle1 + (q % 2 == 0 ? q / 2 : -(q / 2 + 1));
+            do {
+                randomchromo2 = ThreadLocalRandom.current().nextInt(min, max);
+            } while (randomchromo2 == randomchromo1);
 
-                        if (chromo1.get(middle).equals(chromo2.get(index))) {
-                            sample = 0;
+            chromo2 = listIn.get(randomchromo2).getSequence();
 
-                            addToListOut(chromo1, chromo2);
-                        }
-                    }
+            start = (int) (chromo1.length()*0.2);
+            end = chromo1.length() - start;
+            randomIndex = ThreadLocalRandom.current().nextInt(start, end);
+
+
+
+            subchromo1 = chromo1.substring(0,randomIndex);
+            subchromo2 = chromo2.substring(randomIndex, chromo2.length());
+
+            lenOfSub1 = subchromo1.length();
+            lenOfSub2 = subchromo2.length();
+
+            for (int j = 9; j >= 0; j--) {
+
+                if (subchromo1.substring(lenOfSub1 - j, lenOfSub1).equals(subchromo2.substring(0, j))) {
+                    res = subchromo1 + subchromo2.substring(j, lenOfSub2);
+                    break;
                 }
             }
+            chromoOut1 = new Chromosome(res);
+            listIn.add(chromoOut1);
+
+
+            for (int j = 9; j >= 0; j--) {
+                if (subchromo2.substring(lenOfSub2 - j, lenOfSub2).equals(subchromo1.substring(0, j))) {
+                    res = subchromo2 + subchromo1.substring(j, lenOfSub1);
+                    break;
+                }
+            }
+            chromoOut2 = new Chromosome(res);
+            listIn.add(chromoOut2);
         }
 
-        for (Chromosome chro: listIn) {
-            System.out.println("Chro1: " + chro.getList_gens().size());
-        }
-        for (Chromosome chro: listOut) {
-            System.out.println("Chro2: " + chro.getList_gens().size());
-        }
-        listOut.addAll(listIn);
-        for (Chromosome chro: listOut) {
-            System.out.println("Chro join: " + chro.getList_gens().size());
-        }
-        return listOut;
+        return listIn;
     }
 
 }
