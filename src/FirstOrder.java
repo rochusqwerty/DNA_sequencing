@@ -30,6 +30,7 @@ public class FirstOrder {
                     gen = takeNext(gen);
                 }
                 if(chromo.list_gens.size()>0) {
+                    chromo.fitness_function();
                     list.add(chromo);
                 }
             }
@@ -71,7 +72,7 @@ public class FirstOrder {
             if(size > Main.sizeOfSequence){
                 chromo.del();
             }
-
+            chromo.fitness_function();
             list.add(chromo);
             size = 10;
         }
