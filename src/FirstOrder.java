@@ -46,7 +46,7 @@ public class FirstOrder {
         Chromosome chromo;
         for(int k = 0; k < Main.sizeOfPopulation; k++) {
             chromo = new Chromosome();
-            size = 9;
+            size = 10;
             for (int i = 0; i < Main.matrix[0].length && size < Main.sizeOfSequence; i++) {
                 if (start.get(i) != 0) {
                     gen = i;
@@ -56,8 +56,6 @@ public class FirstOrder {
                         gen = takeNext2(gen);
                         chromo.add(gen);
                     }
-                    System.out.println(chromo.size());
-                    //list.add(chromo);
                 }
             }
             Random randomGenerator = new Random();
@@ -70,12 +68,13 @@ public class FirstOrder {
                     gen = takeNext2(gen);
                 }
             }
-            if (1 <= Main.sizeOfSequence) {
-                list.add(chromo);
-                size = 9;
+            if(size > Main.sizeOfSequence){
+                chromo.del();
             }
+
+            list.add(chromo);
+            size = 10;
         }
-        System.out.println("Rozmiar listy: " + list.size());
         return list;
     }
 

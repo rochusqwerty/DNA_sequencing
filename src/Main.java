@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
     public static int[][] matrix;
-    public static int sizeOfSequence = 200, sizeOfPopulation = 1000;
+    public static int sizeOfSequence = 209, sizeOfPopulation = 1000;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
 
@@ -93,7 +93,7 @@ public class Main {
         for (Integer gen : p.get(0).list_gens) {
             System.out.println(gen.toString() + ": " + list.get(gen));
         }
-        System.out.println("Second: " + p.get(1).list_gens.size());
+        System.out.println("\n\nSecond: " + p.get(1).list_gens.size());
         for (Integer gen : p.get(1).list_gens) {
             System.out.println(gen.toString() + ": " + list.get(gen));
         }
@@ -105,10 +105,7 @@ public class Main {
 
         matrix = createMatrixWeight(list);
 
-        //printMatrix(matrix);
-
         createListOfSimilarity(matrix);
-        System.out.println("FirstOrder");
         FirstOrder first = new FirstOrder();
         population = first.create2();
         for (int i=0; i<1; i++){  //do zmiany 100, warunek zakończenia
