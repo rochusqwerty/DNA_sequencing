@@ -24,6 +24,7 @@ public class Chromosome implements Comparable<Chromosome>{
         this.list_gens = new ArrayList<>();
         this.fitness_score = 0;
         this.numberOfUses = new int[Main.list.size()];
+        fitness_function();
     }
 
     public Chromosome(String sequence) {
