@@ -6,7 +6,8 @@ import java.util.List;
 
 public class Main {
     public static int[][] matrix;
-    public static int sizeOfSequence = 509, sizeOfPopulation = 1000;
+    public static int sizeOfSequence = 209, sizeOfPopulation = 1000, numberOfMutation = 200;
+    public static double rateMutation = 0.2;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
 
@@ -109,10 +110,10 @@ public class Main {
         FirstOrder first = new FirstOrder();
         population = first.create2();
         for (int i=0; i<1; i++){  //do zmiany 100, warunek zakończenia
-            Mutation mut = new Mutation();
             Crossover cross = new Crossover(population);
+            Mutation mut = new Mutation(population);
             population = cross.cross();
-            //population = mut.mutate(population);      //TO DO
+            population = mut.mutate();      //TO DO
             for (Chromosome chromo: population) {
                 chromo.fitness_function();
             }
