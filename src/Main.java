@@ -1,23 +1,16 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 public class Main {
     public static int[][] matrix;
-    public static int sizeOfSequence = 509, sizeOfPopulation = 1000;
+    public static int sizeOfSequence, sizeOfPopulation;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
 
 
-    static void loadFileAsList(String[] args) {
-        if (args.length != 1) {
-            System.err.println("Invalid command line, exactly one argument required");
-            System.exit(1);
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
+    static void loadDataFromFile(String args) {
+        try (BufferedReader br = new BufferedReader(new FileReader(args))) {
             String line;
             while ((line = br.readLine()) != null) {
                 list.add(line);
@@ -25,6 +18,28 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    static List<List<String>> loadFilesAsList(String[] args) {
+        List<String> listOfDirectories;
+        List<List<String>> listOfFiles_good = new ArrayList<>();
+        listOfDirectories = Arrays.asList("b_negatyw_powt", "b_pozyt_los", "b_negatyw_los", "b_pozyt_kon");
+        for (String dir: listOfDirectories) {
+            String pathname = "ins/" + dir;
+            File folder = new File(pathname);
+            File[] listOfFiles = folder.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++) {
+                if (listOfFiles[i].isFile()) {
+                    List<String> path = new ArrayList<>();
+                    path.add(pathname);
+                    path.add(listOfFiles[i].getName());
+                    listOfFiles_good.add(path);
+                }
+            }
+        }
+        return listOfFiles_good;
+
     }
 
     static int[][] createMatrixWeight(List<String> list) {
@@ -99,28 +114,60 @@ public class Main {
         }
     }
 
+
     public static void main(String[] args) {
-        loadFileAsList(args);
-        List<Chromosome> population;
 
-        matrix = createMatrixWeight(list);
-
-        createListOfSimilarity(matrix);
-        FirstOrder first = new FirstOrder();
-        population = first.create2();
-        for (int i=0; i<1; i++){  //do zmiany 100, warunek zakończenia
-            Mutation mut = new Mutation();
-            Crossover cross = new Crossover(population);
-            population = cross.cross();
-            //population = mut.mutate(population);      //TO DO
-            for (Chromosome chromo: population) {
-                chromo.fitness_function();
+        List<List<String>> listOfFiles = loadFilesAsList(args);
+        for (List<String> file : listOfFiles) {
+            String[] output = file.get(1).split("\\.");
+            output = output[0].split("\\_");
+            int indexOfInst = Integer.parseInt(output[0]);
+            char sign;
+            if (output[1].indexOf('+') > 0) {
+                sign = '+';
+            } else {
+                sign = '-';
             }
-            Collections.sort(population);
-            //if(population.size() > 100)
-                //population.subList(0, 100).clear();
+            output = output[1].split("[-\\+]");
+            int l = Integer.parseInt(output[0]);
+            int err = Integer.parseInt(output[1]);
+
+            sizeOfPopulation = l * 4;
+            loadDataFromFile(file.get(0) + "/" + file.get(1));
+            System.out.println(file);
+            System.out.println(indexOfInst + " " + l + " " + err);
+
+            sizeOfSequence = l + 9;
+
+            int predictedOutput;
+            if (sign == '+') {
+                predictedOutput = sizeOfSequence - err;
+            } else {
+                predictedOutput = sizeOfSequence + err;
+            }
+            System.out.println(predictedOutput);
+
+            List<Chromosome> population;
+
+            matrix = createMatrixWeight(list);
+
+            createListOfSimilarity(matrix);
+            FirstOrder first = new FirstOrder();
+            population = first.create2();
+            for (int i=0; i<1; i++){  //do zmiany 100, warunek zakończenia
+                Mutation mut = new Mutation();
+                Crossover cross = new Crossover(population);
+                population = cross.cross();
+                //population = mut.mutate(population);      //TO DO
+                for (Chromosome chromo: population) {
+                    chromo.fitness_function();
+                }
+                Collections.sort(population);
+                //if(population.size() > 100)
+                    //population.subList(0, 100).clear();
+            }
+            summary(population);
         }
-        summary(population);
     }
 
 
