@@ -141,9 +141,9 @@ public class Main {
 
             int predictedOutput;
             if (sign == '+') {
-                predictedOutput = sizeOfSequence - err;
+                predictedOutput = sizeOfSequence;
             } else {
-                predictedOutput = sizeOfSequence + err;
+                predictedOutput = sizeOfSequence - err;
             }
             System.out.println(predictedOutput);
 
