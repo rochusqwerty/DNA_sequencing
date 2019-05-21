@@ -16,7 +16,7 @@ public class Crossover {
     }
 
     List<Chromosome> cross(){
-        max = Main.sizeOfSequence;
+        max = listIn.size();
         bound *= (float) max;
         for(int i = 0; i < bound; i++){
             System.out.println((int)(Main.sizeOfPopulation));
