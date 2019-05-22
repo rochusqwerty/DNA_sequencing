@@ -44,6 +44,7 @@ public class Mutation {
                 chromo.setList_gens(list_gens);
                 chromo.updateSequence();
                 chromo.fix();
+                System.out.println("Mutate: " + chromo.getList_gens().size());
                 list.add(chromo);
             }
 

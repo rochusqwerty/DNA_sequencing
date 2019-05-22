@@ -7,12 +7,13 @@ public class Main {
     public static int sizeOfSequence, sizeOfPopulation;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
-    public static int numberOfMutation = 100;
+    public static int numberOfMutation = 20;
 
 
     static void loadDataFromFile(String args) {
         try (BufferedReader br = new BufferedReader(new FileReader(args))) {
             String line;
+            list = new ArrayList<>();
             while ((line = br.readLine()) != null) {
                 list.add(line);
             }
@@ -105,21 +106,35 @@ public class Main {
 
     static void summary( List<Chromosome> p, int predictedOutput) {
         System.out.println("Size of population: " + p.size());
+        System.out.println("Size of list: " + Main.list.size());
         System.out.println("First: " + p.get(0).list_gens.size());
-        int maxi = max(p.get(0).list_gens.size(), )
-        float percent = ((float)p.get(0).list_gens.size()/predictedOutput)*100;
+        float percent = ((float)counter(p.get(0).list_gens)/predictedOutput)*100;
         System.out.println("percent:" + percent);
 //        for (Integer gen : p.get(0).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
         System.out.println("Second: " + p.get(1).list_gens.size());
-        percent = ((float)p.get(1).list_gens.size()/predictedOutput)*100;
+        percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
         System.out.println("percent:" + percent + "\n\n");
 //        for (Integer gen : p.get(1).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
     }
 
+    static int counter( List<Integer> gens) {
+        int[] numberOfUses = new int[Main.list.size()];
+        int counter = 0;
+        for (int i = 0; i < numberOfUses.length; i++) {
+            numberOfUses[i] = 0;
+        }
+        for (Integer gen : gens) {
+            numberOfUses[gen]++;
+        }
+        for (int i = 0; i < numberOfUses.length; i++) {
+            if(numberOfUses[i] == 1) counter++;
+        }
+        return counter;
+    }
 
     public static void main(String[] args) {
 
@@ -161,17 +176,18 @@ public class Main {
             createListOfSimilarity(matrix);
             FirstOrder first = new FirstOrder();
             population = first.create2();
-            for (int i=0; i<1; i++){  //do zmiany 100, warunek zakończenia
+            for (int i=0; i<4; i++){  //do zmiany 100, warunek zakończenia
                 Mutation mut = new Mutation(population);
                 Crossover cross = new Crossover(population);
                 population = cross.cross();
-                //population = mut.mutate(population);      //TO DO
+                population = mut.mutate();      //TO DO
                 for (Chromosome chromo: population) {
                     chromo.fitness_function();
                 }
                 Collections.sort(population);
-                //if(population.size() > 100)
-                    //population.subList(0, 100).clear();
+                if(population.size() > sizeOfPopulation)
+                    population = population.subList(0, sizeOfPopulation);
+                System.out.println(population.size());
             }
             summary(population, predictedOutput);
         }
