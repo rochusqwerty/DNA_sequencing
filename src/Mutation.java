@@ -31,7 +31,7 @@ public class Mutation {
                 }
             }
             int temp;
-            for(int j = 0; j < choice.size() && changed; j++){
+            for(int j = 0; j < choice.size() && changed && j<Main.list.size()-2; j++){
                 temp = choice.get(j);
                 for(int k = 0; k < Main.list.size(); k++) {
                     if (Main.matrix[list_gens.get(temp)][list_gens.get(temp + 1)] < Main.matrix[k][list_gens.get(temp + 1)]) {
@@ -44,7 +44,6 @@ public class Mutation {
                 chromo.setList_gens(list_gens);
                 chromo.updateSequence();
                 chromo.fix();
-                System.out.println("Mutate: " + chromo.getList_gens().size());
                 list.add(chromo);
             }
 

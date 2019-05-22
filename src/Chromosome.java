@@ -34,8 +34,6 @@ public class Chromosome implements Comparable<Chromosome>{
         this.list_gens = new ArrayList<>();
         this.fitness_score = 0;
         this.numberOfUses = new int[Main.list.size()];
-        calculate_list_gens();
-        fix();
     }
 
     public Integer size(){
@@ -53,10 +51,11 @@ public class Chromosome implements Comparable<Chromosome>{
         for (int i = 1; i < list_gens.size(); i++) {
             el1 = list_gens.get(i-1);
             el2 = list_gens.get(i);
-            fitness_score += (int)Math.ceil(Main.matrix[el1][el2] / ((float)numberOfUses[el2] * 3.0));
+            fitness_score += (int)Math.ceil(Main.matrix[el1][el2] / ((float)numberOfUses[el2] * 5.0));
             numberOfUses[el2] += 1;
-            sequence += Main.list.get(el1).substring(Main.matrix[el1][el2]);
+            sequence += Main.list.get(el2).substring(Main.matrix[el1][el2]);
         }
+        //System.out.println("FF: " + sequence.length());
     }
 
     //Update list_gens, based on sequence
@@ -75,11 +74,11 @@ public class Chromosome implements Comparable<Chromosome>{
             del();
             updateSequence();
         }
-        while(sequence.length()< Main.sizeOfSequence){
+        while(sequence.length() < Main.sizeOfSequence){
             List<Integer> choice = new ArrayList<>();
             Random randomGenerator = new Random();
             int randomInt = 0;
-            for (int i = 9; i > 0; i--) {
+            for (int i = 9; i > Main.sizeOfSequence - sequence.length() && i>0; i--) {
                 for (int j = 0; j < Main.matrix[0].length; j++) {
                     if(Main.matrix[list_gens.get(list_gens.size()-1)][j]==i)choice.add(j);
                 }
@@ -90,18 +89,23 @@ public class Chromosome implements Comparable<Chromosome>{
                     break;
                 }
             }
+            if (sequence.length()< Main.sizeOfSequence){
             add(randomGenerator.nextInt(Main.matrix[0].length));
+            updateSequence();}
+        }
+        if(sequence.length() > Main.sizeOfSequence) {
+            del();
             updateSequence();
         }
-        if(sequence.length() > Main.sizeOfSequence)
-            del();
+        //System.out.println("F: " + sequence.length());
     }
 
     void updateSequence(){
         sequence = Main.list.get(list_gens.get(0));
         for (int i = 1; i < list_gens.size(); i++) {
-            sequence += Main.list.get(list_gens.get(i-1)).substring(Main.matrix[list_gens.get(i-1)][list_gens.get(i)]);
+            sequence += Main.list.get(list_gens.get(i)).substring(Main.matrix[list_gens.get(i-1)][list_gens.get(i)]);
         }
+        //System.out.println(sequence.length());
     }
 
     public void add(int gen) {

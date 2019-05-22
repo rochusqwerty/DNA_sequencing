@@ -7,7 +7,7 @@ public class Main {
     public static int sizeOfSequence, sizeOfPopulation;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
-    public static int numberOfMutation = 20;
+    public static int numberOfMutation = 200;
 
 
     static void loadDataFromFile(String args) {
@@ -25,7 +25,7 @@ public class Main {
     static List<List<String>> loadFilesAsList(String[] args) {
         List<String> listOfDirectories;
         List<List<String>> listOfFiles_good = new ArrayList<>();
-        listOfDirectories = Arrays.asList("b_negatyw_powt", "b_pozyt_los", "b_negatyw_los", "b_pozyt_kon");
+        listOfDirectories = Arrays.asList("b_negatyw_los", "b_pozyt_kon", "b_negatyw_powt", "b_pozyt_los");
         for (String dir: listOfDirectories) {
             String pathname = "ins/" + dir;
             File folder = new File(pathname);
@@ -131,7 +131,7 @@ public class Main {
             numberOfUses[gen]++;
         }
         for (int i = 0; i < numberOfUses.length; i++) {
-            if(numberOfUses[i] == 1) counter++;
+            if(numberOfUses[i] > 0) counter++;
         }
         return counter;
     }
@@ -176,10 +176,10 @@ public class Main {
             createListOfSimilarity(matrix);
             FirstOrder first = new FirstOrder();
             population = first.create2();
-            for (int i=0; i<4; i++){  //do zmiany 100, warunek zakończenia
-                Mutation mut = new Mutation(population);
+            for (int i=0; i<8; i++){  //do zmiany 100, warunek zakończenia
                 Crossover cross = new Crossover(population);
                 population = cross.cross();
+                Mutation mut = new Mutation(population);
                 population = mut.mutate();      //TO DO
                 for (Chromosome chromo: population) {
                     chromo.fitness_function();
