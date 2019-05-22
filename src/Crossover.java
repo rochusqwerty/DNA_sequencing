@@ -19,8 +19,6 @@ public class Crossover {
         max = listIn.size();
         bound *= (float) max;
         for(int i = 0; i < bound; i++){
-            System.out.println((int)(Main.sizeOfPopulation));
-            System.out.println(bound);
             randomchromo1 = ThreadLocalRandom.current().nextInt(min, max);
             chromo1 = listIn.get(randomchromo1).getSequence();
 

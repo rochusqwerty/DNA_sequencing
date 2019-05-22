@@ -7,6 +7,7 @@ public class Main {
     public static int sizeOfSequence, sizeOfPopulation;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
+    public static int numberOfMutation = 100;
 
 
     static void loadDataFromFile(String args) {
@@ -102,16 +103,21 @@ public class Main {
         }
     }
 
-    static void summary( List<Chromosome> p) {
+    static void summary( List<Chromosome> p, int predictedOutput) {
         System.out.println("Size of population: " + p.size());
         System.out.println("First: " + p.get(0).list_gens.size());
-        for (Integer gen : p.get(0).list_gens) {
-            System.out.println(gen.toString() + ": " + list.get(gen));
-        }
-        System.out.println("\n\nSecond: " + p.get(1).list_gens.size());
-        for (Integer gen : p.get(1).list_gens) {
-            System.out.println(gen.toString() + ": " + list.get(gen));
-        }
+        int maxi = max(p.get(0).list_gens.size(), )
+        float percent = ((float)p.get(0).list_gens.size()/predictedOutput)*100;
+        System.out.println("percent:" + percent);
+//        for (Integer gen : p.get(0).list_gens) {
+//            System.out.println(gen.toString() + ": " + list.get(gen));
+//        }
+        System.out.println("Second: " + p.get(1).list_gens.size());
+        percent = ((float)p.get(1).list_gens.size()/predictedOutput)*100;
+        System.out.println("percent:" + percent + "\n\n");
+//        for (Integer gen : p.get(1).list_gens) {
+//            System.out.println(gen.toString() + ": " + list.get(gen));
+//        }
     }
 
 
@@ -129,23 +135,24 @@ public class Main {
                 sign = '-';
             }
             output = output[1].split("[-\\+]");
-            int l = Integer.parseInt(output[0]);
+            int spectrum = Integer.parseInt(output[0]);
             int err = Integer.parseInt(output[1]);
 
-            sizeOfPopulation = l * 4;
+            sizeOfPopulation = spectrum * 4;
             loadDataFromFile(file.get(0) + "/" + file.get(1));
             System.out.println(file);
-            System.out.println(indexOfInst + " " + l + " " + err);
+            System.out.println(indexOfInst + " " + spectrum + " " + err);
 
-            sizeOfSequence = l + 9;
+            sizeOfSequence = spectrum + 9;
 
             int predictedOutput;
             if (sign == '+') {
-                predictedOutput = sizeOfSequence;
+                predictedOutput = sizeOfSequence - 9;
             } else {
-                predictedOutput = sizeOfSequence - err;
+                predictedOutput = sizeOfSequence - err - 9;
             }
-            System.out.println(predictedOutput);
+
+            System.out.println("predicted_output:" + predictedOutput);
 
             List<Chromosome> population;
 
@@ -155,7 +162,7 @@ public class Main {
             FirstOrder first = new FirstOrder();
             population = first.create2();
             for (int i=0; i<1; i++){  //do zmiany 100, warunek zakończenia
-                Mutation mut = new Mutation();
+                Mutation mut = new Mutation(population);
                 Crossover cross = new Crossover(population);
                 population = cross.cross();
                 //population = mut.mutate(population);      //TO DO
@@ -166,7 +173,7 @@ public class Main {
                 //if(population.size() > 100)
                     //population.subList(0, 100).clear();
             }
-            summary(population);
+            summary(population, predictedOutput);
         }
     }
 
