@@ -9,7 +9,8 @@ public class Crossover {
     float bound = 0.2f;
     int start, end, randomIndex, randomchromo1, randomchromo2, lenOfSub1, lenOfSub2;
     String chromo1, chromo2, subchromo1, subchromo2, res;
-    Chromosome chromoOut1, chromoOut2;;
+    Chromosome chromoOut1, chromoOut2;
+    String chromo1sub, chromo2sub;
 
     Crossover(List<Chromosome> list){
         this.listIn = list;
@@ -33,16 +34,19 @@ public class Crossover {
             randomIndex = ThreadLocalRandom.current().nextInt(start, end);
 
 
-
-            subchromo1 = chromo1.substring(0,randomIndex);
-            subchromo2 = chromo2.substring(randomIndex, chromo2.length());
+            chromo1sub = chromo1;
+            chromo2sub = chromo2;
+            subchromo1 = chromo1sub.substring(0,randomIndex);
+            subchromo2 = chromo2sub.substring(randomIndex, chromo2.length());
 
             lenOfSub1 = subchromo1.length();
             lenOfSub2 = subchromo2.length();
 
             for (int j = 9; j >= 0; j--) {
+                chromo1sub = subchromo1;
+                chromo2sub = subchromo2;
 
-                if (subchromo1.substring(lenOfSub1 - j, lenOfSub1).equals(subchromo2.substring(0, j))) {
+                if (chromo1sub.substring(lenOfSub1 - j, lenOfSub1).equals(chromo2sub.substring(0, j))) {
                     res = subchromo1 + subchromo2.substring(j, lenOfSub2);
                     break;
                 }
@@ -52,8 +56,10 @@ public class Crossover {
 
 
             for (int j = 9; j >= 0; j--) {
-                if (subchromo2.substring(lenOfSub2 - j, lenOfSub2).equals(subchromo1.substring(0, j))) {
-                    res = subchromo2 + subchromo1.substring(j, lenOfSub1);
+                chromo1sub = subchromo1;
+                chromo2sub = subchromo2;
+                if (chromo2sub.substring(lenOfSub2 - j, lenOfSub2).equals(chromo1sub.substring(0, j))) {
+                    res = chromo2sub + chromo1sub.substring(j, lenOfSub1);
                     break;
                 }
             }
