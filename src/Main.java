@@ -8,6 +8,8 @@ public class Main {
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
     public static int numberOfMutation = 200;
+    public static int predictedOutput;
+
 
 
     static void loadDataFromFile(String args) {
@@ -160,7 +162,6 @@ public class Main {
 
             sizeOfSequence = spectrum + 9;
 
-            int predictedOutput;
             if (sign == '+') {
                 predictedOutput = sizeOfSequence - 9;
             } else {
@@ -176,7 +177,7 @@ public class Main {
             createListOfSimilarity(matrix);
             FirstOrder first = new FirstOrder();
             population = first.create2();
-            for (int i=0; i<8; i++){  //do zmiany 100, warunek zakończenia
+            for (int i=0; i<5; i++){  //do zmiany 100, warunek zakończenia
                 Crossover cross = new Crossover(population);
                 population = cross.cross();
                 Mutation mut = new Mutation(population);

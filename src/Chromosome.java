@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Chromosome implements Comparable<Chromosome>{
     List<Integer> list_gens;
@@ -11,7 +12,11 @@ public class Chromosome implements Comparable<Chromosome>{
     public List<Integer> getList_gens() {
         return list_gens;
     }
-    public String getSequence() {
+    public String doSequence() {
+        for (Integer i : list_gens) {
+            while (i<list_gens.size())
+                sequence += Main.matrix[i][i+1];
+        }
         return sequence;
     }
 
@@ -65,6 +70,20 @@ public class Chromosome implements Comparable<Chromosome>{
                 if(sequence.substring(i,i+10).equals(Main.list.get(j)))
                     add(j);
             }
+        }
+    }
+
+    void fix2() {
+        while(list_gens.size() > Main.predictedOutput) {
+            del();
+        }
+        while(list_gens.size() < Main.predictedOutput) {
+            List<Integer> neww = Main.listOfSimilarity.get(list_gens.get(list_gens.size()-1));
+            if (neww.isEmpty()){
+                int randomNum1 = ThreadLocalRandom.current().nextInt(0, Main.matrix.length);
+                list_gens.add(randomNum1);
+            } else
+                list_gens.add(neww.get(0));
         }
     }
 
