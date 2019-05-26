@@ -6,6 +6,8 @@ public class FirstOrder {
     List<Chromosome> list = new ArrayList<>();
     List<Integer> start = new ArrayList<>();
     int size = 0;
+    int[] numberOfUses = new int[Main.list.size()];
+
 
     FirstOrder(){
     }
@@ -46,6 +48,9 @@ public class FirstOrder {
         int gen;
         Chromosome chromo;
         for(int k = 0; k < Main.sizeOfPopulation; k++) {
+            for (int i = 0; i < numberOfUses.length; i++) {
+                numberOfUses[i] = 0;
+            }
             chromo = new Chromosome();
             size = 10;
             for (int i = 0; i < Main.matrix[0].length && size < Main.sizeOfSequence; i++) {
@@ -53,9 +58,11 @@ public class FirstOrder {
                     gen = i;
                     start.set(gen, 0);
                     chromo.add(gen);
+                    numberOfUses[gen]=1;
                     while (size < Main.sizeOfSequence) {
                         gen = takeNext2(gen);
                         chromo.add(gen);
+                        numberOfUses[gen]=1;
                     }
                 }
             }
@@ -63,10 +70,12 @@ public class FirstOrder {
             while (size < Main.sizeOfSequence) {
                 gen = randomGenerator.nextInt(Main.matrix[0].length);
                 chromo.add(gen);
+                numberOfUses[gen]=1;
                 gen = takeNext2(gen);
                 while (size < Main.sizeOfSequence) {
                     chromo.add(gen);
                     gen = takeNext2(gen);
+                    numberOfUses[gen]=1;
                 }
             }
             if(size > Main.sizeOfSequence){
@@ -95,7 +104,7 @@ public class FirstOrder {
         int randomInt = 0;
         for (int i = 9; i > 0; i--) {
             for (int j = 0; j < Main.matrix[0].length; j++) {
-                if(Main.matrix[current][j]==i)choice.add(j);
+                if(Main.matrix[current][j]==i && numberOfUses[j]==0) choice.add(j);
             }
             if (!choice.isEmpty()){
                 randomInt = randomGenerator.nextInt(choice.size());
