@@ -42,7 +42,6 @@ public class Mutation {
                 }
                 Chromosome chromo = new Chromosome();
                 chromo.setList_gens(list_gens);
-                chromo.updateSequence();
                 chromo.fix();
                 list.add(chromo);
             }

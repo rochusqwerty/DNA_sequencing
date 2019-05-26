@@ -55,7 +55,7 @@ public class Crossover {
                             if (!newList1.isEmpty()) {
                                 newChromo = new Chromosome();
                                 newChromo.setList_gens(newList1);
-                                newChromo.fix2();
+                                newChromo.fix();
                                 listOut.add(newChromo);
                             }
 
@@ -68,7 +68,7 @@ public class Crossover {
                             if (!newList2.isEmpty()) {
                                 newChromo = new Chromosome();
                                 newChromo.setList_gens(newList2);
-                                newChromo.fix2();
+                                newChromo.fix();
                                 listOut.add(newChromo);
                             }
                         }

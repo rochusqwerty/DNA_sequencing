@@ -89,6 +89,7 @@ public class Chromosome implements Comparable<Chromosome>{
 
 
     void fix(){
+        updateSequence();
         while(sequence.length() > Main.sizeOfSequence){
             del();
             updateSequence();
