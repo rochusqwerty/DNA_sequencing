@@ -106,18 +106,33 @@ public class Main {
         }
     }
 
-    static void summary( List<Chromosome> p, int predictedOutput) {
-        System.out.println("Size of population: " + p.size());
-        System.out.println("Size of list: " + Main.list.size());
-        System.out.println("First: " + p.get(0).list_gens.size());
+    static void summary( List<Chromosome> p, int predictedOutput, String file, File outputFile) {
+
+        try {
+            FileWriter fr = new FileWriter(outputFile, true);
+            fr.write(file + "\n");
+            float percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
+            System.out.println(percent);
+            fr.write(percent + "\n");
+            fr.close();
+
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+        }
+        //System.out.println("Size of population: " + p.size());
+        //System.out.println("Size of list: " + Main.list.size());
+        //System.out.println("First: " + p.get(0).list_gens.size());
+
+
         float percent = ((float)counter(p.get(0).list_gens)/predictedOutput)*100;
-        System.out.println("percent:" + percent);
+        //System.out.println("percent:" + percent);
 //        for (Integer gen : p.get(0).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
-        System.out.println("Second: " + p.get(1).list_gens.size());
-        percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
-        System.out.println("percent:" + percent + "\n\n");
+        //System.out.println("Second: " + p.get(1).list_gens.size());
+
+        //System.out.println("percent:" + percent + "\n\n");
+
 //        for (Integer gen : p.get(1).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
@@ -141,6 +156,10 @@ public class Main {
     public static void main(String[] args) {
 
         List<List<String>> listOfFiles = loadFilesAsList(args);
+
+        File outputFile = new File("results.txt");
+
+
         for (List<String> file : listOfFiles) {
             String[] output = file.get(1).split("\\.");
             output = output[0].split("\\_");
@@ -156,9 +175,11 @@ public class Main {
             int err = Integer.parseInt(output[1]);
 
             sizeOfPopulation = spectrum * 4;
-            loadDataFromFile(file.get(0) + "/" + file.get(1));
-            System.out.println(file);
-            System.out.println(indexOfInst + " " + spectrum + " " + err);
+            String allNameFile = file.get(0) + "/" + file.get(1);
+            loadDataFromFile(allNameFile);
+
+            System.out.println(allNameFile);
+           // System.out.println(indexOfInst + " " + spectrum + " " + err);
 
             sizeOfSequence = spectrum + 9;
 
@@ -168,7 +189,7 @@ public class Main {
                 predictedOutput = sizeOfSequence - err - 9;
             }
 
-            System.out.println("predicted_output:" + predictedOutput);
+            // System.out.println("predicted_output:" + predictedOutput);
 
             List<Chromosome> population;
 
@@ -190,7 +211,7 @@ public class Main {
                     population = population.subList(0, sizeOfPopulation);
                 System.out.println(population.size());
             }
-            summary(population, predictedOutput);
+            summary(population, predictedOutput, allNameFile, outputFile);
         }
     }
 

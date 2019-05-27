@@ -74,10 +74,10 @@ public class Chromosome implements Comparable<Chromosome>{
     }
 
     void fix2() {
-        while(list_gens.size() > Main.predictedOutput) {
+        while(list_gens.size() > Main.predictedOutput-1) {
             del();
         }
-        while(list_gens.size() < Main.predictedOutput) {
+        while(list_gens.size() < Main.predictedOutput-1) {
             List<Integer> neww = Main.listOfSimilarity.get(list_gens.get(list_gens.size()-1));
             if (neww.isEmpty()){
                 int randomNum1 = ThreadLocalRandom.current().nextInt(0, Main.matrix.length);
