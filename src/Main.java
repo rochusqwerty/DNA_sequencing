@@ -11,7 +11,6 @@ public class Main {
     public static int predictedOutput;
 
 
-
     static void loadDataFromFile(String args) {
         try (BufferedReader br = new BufferedReader(new FileReader(args))) {
             String line;
@@ -43,12 +42,10 @@ public class Main {
             }
         }
         return listOfFiles_good;
-
     }
 
     static int[][] createMatrixWeight(List<String> list) {
         int[][] matrix = new int [list.size()][list.size()];
-
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size(); j++) {
                 String l = list.get(j);
@@ -77,15 +74,6 @@ public class Main {
         return matrix;
     }
 
-    static void printMatrix(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
     static List<List<Integer>>  createListOfSimilarity(int[][] matrix) {
         for (int i = 0; i < matrix.length; i++) {
             List<Integer> insideList = new ArrayList<>();
@@ -99,15 +87,7 @@ public class Main {
         return listOfSimilarity;
     }
 
-    static void bestChromo( List<Chromosome> p){
-        System.out.print( "The best:");
-        for (Integer gen: p.get(0).list_gens) {
-            System.out.print(gen.toString() + ": " + list.get(gen));
-        }
-    }
-
-    static void summary( List<Chromosome> p, int predictedOutput, String file, File outputFile) {
-
+    static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile) {
         try {
             FileWriter fr = new FileWriter(outputFile, true);
             fr.write(file + "\n");
@@ -115,26 +95,18 @@ public class Main {
             System.out.println(percent);
             fr.write(percent + "\n");
             fr.close();
-
         } catch (IOException e) {
             System.err.println("IOException: " + e.getMessage());
         }
-        //System.out.println("Size of population: " + p.size());
-        //System.out.println("Size of list: " + Main.list.size());
-        //System.out.println("First: " + p.get(0).list_gens.size());
+    }
 
-
+    static void summary( List<Chromosome> p, int predictedOutput) {
+        System.out.println("Size of population: " + p.size());
+        System.out.println("Size of list: " + Main.list.size());
+        System.out.println("First: " + p.get(0).list_gens.size());
         float percent = ((float)counter(p.get(0).list_gens)/predictedOutput)*100;
-        //System.out.println("percent:" + percent);
+        System.out.println("percent:" + percent);
 //        for (Integer gen : p.get(0).list_gens) {
-//            System.out.println(gen.toString() + ": " + list.get(gen));
-//        }
-
-//        System.out.println("Second: " + p.get(1).list_gens.size());
-//        percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
-//        System.out.println("percent:" + percent + "\n\n");
-
-//        for (Integer gen : p.get(1).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
     }
@@ -155,12 +127,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
         List<List<String>> listOfFiles = loadFilesAsList(args);
-
         File outputFile = new File("results.txt");
-
-
         for (List<String> file : listOfFiles) {
             String[] output = file.get(1).split("\\.");
             output = output[0].split("\\_");
@@ -174,33 +142,22 @@ public class Main {
             output = output[1].split("[-\\+]");
             int spectrum = Integer.parseInt(output[0]);
             int err = Integer.parseInt(output[1]);
-
             sizeOfPopulation = spectrum * 4;
             numberOfMutation = spectrum / 2;
-            loadDataFromFile(file.get(0) + "/" + file.get(1));
-            System.out.println(file);
-            System.out.println(indexOfInst + " " + spectrum + " " + err);
             String allNameFile = file.get(0) + "/" + file.get(1);
             loadDataFromFile(allNameFile);
-
             System.out.println(allNameFile);
-           // System.out.println(indexOfInst + " " + spectrum + " " + err);
-
             sizeOfSequence = spectrum + 9;
-
             if (sign == '+') {
                 predictedOutput = sizeOfSequence - 9;
             } else {
                 predictedOutput = sizeOfSequence - err - 9;
             }
-
-            // System.out.println("predicted_output:" + predictedOutput);
-
             List<Chromosome> population;
-
             matrix = createMatrixWeight(list);
-
             createListOfSimilarity(matrix);
+
+
             FirstOrder first = new FirstOrder();
             population = first.create2();
             for (Chromosome chromo: population) {
@@ -208,17 +165,19 @@ public class Main {
             }
             Collections.sort(population);
             summary(population, predictedOutput);
-            for (int i=0; i<5; i++){  //do zmiany 100, warunek zakończenia
+            for (int i=0; i<5; i++){
                 Crossover cross = new Crossover(population);
                 population = cross.cross();
                 Mutation mut = new Mutation(population);
-                population = mut.mutate();      //TO DO
+                population = mut.mutate();
                 Collections.sort(population);
                 if(population.size() > sizeOfPopulation/8)
                     population = population.subList(0, sizeOfPopulation/8);
                 System.out.println(population.size());
             }
-            summary(population, predictedOutput, allNameFile, outputFile);
+            summary(population, predictedOutput);
+            System.out.println("\n\n");
+            writeToFile(population, predictedOutput, allNameFile, outputFile);
         }
     }
 
