@@ -80,10 +80,10 @@ public class Main {
         try {
             FileWriter fr = new FileWriter(outputFile, true);
             fr.write(file + "\n");
-            fr.write("sizeOfSequence " + sizeOfSequence +
-                    "\nsizeOfPopulation "  + sizeOfPopulation +
-                    "\nsizeOfFirstPopulation " + sizeOfFirstPopulation +"" +
-                    "\nnumberOfCrossover " + numberOfCrossover + "\n");
+            fr.write(sizeOfPopulation + "\n"
+                            + sizeOfFirstPopulation +"\n"
+                            + numberOfMutation +"\n"
+                            + numberOfCrossover + "\n");
 
             float percent = ((float)counter(p.get(0).list_gens)/predictedOutput)*100;
             //System.out.println(percent);
@@ -134,7 +134,9 @@ public class Main {
 
         for (List<String> file : listOfFiles) {
             String[] output = file.get(1).split("\\.");
+            String name = output[0];
             output = output[0].split("\\_");
+
             int indexOfInst = Integer.parseInt(output[0]);
             char sign;
             if (output[1].indexOf('+') > 0) {
@@ -142,6 +144,7 @@ public class Main {
             } else {
                 sign = '-';
             }
+
             output = output[1].split("[-\\+]");
             int spectrum = Integer.parseInt(output[0]);
             int err = Integer.parseInt(output[1]);
@@ -161,8 +164,8 @@ public class Main {
             for(int pom = 0; pom<10; pom++) {
 
                 sizeOfPopulation = spectrum / 2;
-                sizeOfFirstPopulation = spectrum ;
-                numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (2 * pom);
+                sizeOfFirstPopulation = spectrum;
+                numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (10 * pom);
                 numberOfCrossover = pom == 0 ? sizeOfPopulation : sizeOfPopulation / pom;
 
                 long startTime = System.nanoTime();
@@ -188,7 +191,7 @@ public class Main {
                 long duration = (endTime - startTime) / 1000000000;
                 summary(population, predictedOutput);
                 System.out.println("\n\n");
-                writeToFile(population, predictedOutput, allNameFile, outputFile, duration);
+                writeToFile(population, predictedOutput, name, outputFile, duration);
             }
         }
     }
