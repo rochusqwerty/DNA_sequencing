@@ -51,13 +51,18 @@ public class Chromosome implements Comparable<Chromosome>{
         }
         fitness_score = 0;
         sequence = Main.list.get(list_gens.get(0));
-        numberOfUses[list_gens.get(0)] += 1;
+        //numberOfUses[list_gens.get(0)] += 1;
+        numberOfUses[list_gens.get(0)] =2;
         int el1, el2;
         for (int i = 1; i < list_gens.size(); i++) {
             el1 = list_gens.get(i-1);
             el2 = list_gens.get(i);
-            fitness_score += (int)Math.ceil(Main.matrix[el1][el2] / ((float)numberOfUses[el2] * 5.0));
-            numberOfUses[el2] += 1;
+            if(numberOfUses[el2] == 1){
+                fitness_score += Main.matrix[el1][el2];
+                numberOfUses[el2] = 2;
+            }
+//            fitness_score += (int)Math.ceil(Main.matrix[el1][el2] / ((float)numberOfUses[el2] * 5.0));
+//            numberOfUses[el2] += 1;
             sequence += Main.list.get(el2).substring(Main.matrix[el1][el2]);
         }
         //System.out.println("FF: " + sequence.length());
@@ -90,29 +95,45 @@ public class Chromosome implements Comparable<Chromosome>{
 
     void fix(){
         updateSequence();
+        int changed = 0;
         while(sequence.length() > Main.sizeOfSequence){
             del();
             updateSequence();
         }
+//        System.out.println("C0");
         while(sequence.length() < Main.sizeOfSequence){
             List<Integer> choice = new ArrayList<>();
             Random randomGenerator = new Random();
             int randomInt = 0;
-            for (int i = 9; i > Main.sizeOfSequence - sequence.length() && i>0; i--) {
-                for (int j = 0; j < Main.matrix[0].length; j++) {
-                    if(Main.matrix[list_gens.get(list_gens.size()-1)][j]==i)choice.add(j);
+//            System.out.println("C1");
+            for (int i = 9; i>=0 && choice.isEmpty(); i--) {
+//                System.out.println("C2a");
+                for (int j = 0; j < numberOfUses.length; j++) {
+//                    System.out.println("C2b");
+                    if(Main.matrix[list_gens.get(list_gens.size()-1)][j]==i && numberOfUses[j]==1){
+                        choice.add(j);
+//                        System.out.println("C2c");
+                    }
                 }
+                changed = 0;
                 if (!choice.isEmpty()){
+//                    System.out.println("C3");
                     randomInt = randomGenerator.nextInt(choice.size());
                     add(choice.get(randomInt));
                     updateSequence();
+                    changed = 1;
                     break;
                 }
             }
-            if (sequence.length()< Main.sizeOfSequence){
-            add(randomGenerator.nextInt(Main.matrix[0].length));
-            updateSequence();}
+            if(changed == 0){
+//                System.out.println("C4");
+                randomInt = randomGenerator.nextInt(Main.list.size());
+                add(randomInt);
+                updateSequence();
+                changed = 1;
+            }
         }
+//        System.out.println("C5");
         if(sequence.length() > Main.sizeOfSequence) {
             del();
             updateSequence();
@@ -121,9 +142,14 @@ public class Chromosome implements Comparable<Chromosome>{
     }
 
     void updateSequence(){
+        for (int i = 0; i < numberOfUses.length; i++) {
+            numberOfUses[i] = 1;
+        }
+        numberOfUses[list_gens.get(0)] =2;
         sequence = Main.list.get(list_gens.get(0));
         for (int i = 1; i < list_gens.size(); i++) {
             sequence += Main.list.get(list_gens.get(i)).substring(Main.matrix[list_gens.get(i-1)][list_gens.get(i)]);
+            numberOfUses[list_gens.get(i)] =2;
         }
         //System.out.println(sequence.length());
     }
