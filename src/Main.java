@@ -27,7 +27,7 @@ public class Main {
     static List<List<String>> loadFilesAsList(String[] args) {
         List<String> listOfDirectories;
         List<List<String>> listOfFiles_good = new ArrayList<>();
-        listOfDirectories = Arrays.asList("b_negatyw_los", "b_pozyt_kon", "b_negatyw_powt", "b_pozyt_los");
+        listOfDirectories = Arrays.asList("b_negatyw_powt","b_pozyt_kon", "b_negatyw_los", "b_pozyt_los");
         for (String dir: listOfDirectories) {
             String pathname = "ins/" + dir;
             File folder = new File(pathname);
@@ -115,9 +115,11 @@ public class Main {
 //        for (Integer gen : p.get(0).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
-        System.out.println("Second: " + p.get(1).list_gens.size());
-        percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
-        System.out.println("percent:" + percent + "\n\n");
+
+//        System.out.println("Second: " + p.get(1).list_gens.size());
+//        percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
+//        System.out.println("percent:" + percent + "\n\n");
+
 //        for (Integer gen : p.get(1).list_gens) {
 //            System.out.println(gen.toString() + ": " + list.get(gen));
 //        }
@@ -156,6 +158,7 @@ public class Main {
             int err = Integer.parseInt(output[1]);
 
             sizeOfPopulation = spectrum * 4;
+            numberOfMutation = spectrum / 2;
             loadDataFromFile(file.get(0) + "/" + file.get(1));
             System.out.println(file);
             System.out.println(indexOfInst + " " + spectrum + " " + err);
@@ -177,20 +180,23 @@ public class Main {
             createListOfSimilarity(matrix);
             FirstOrder first = new FirstOrder();
             population = first.create2();
+            for (Chromosome chromo: population) {
+                chromo.fitness_function();
+            }
+            Collections.sort(population);
+            summary(population, predictedOutput);
             for (int i=0; i<5; i++){  //do zmiany 100, warunek zakończenia
                 Crossover cross = new Crossover(population);
                 population = cross.cross();
                 Mutation mut = new Mutation(population);
                 population = mut.mutate();      //TO DO
-                for (Chromosome chromo: population) {
-                    chromo.fitness_function();
-                }
                 Collections.sort(population);
-                if(population.size() > sizeOfPopulation)
-                    population = population.subList(0, sizeOfPopulation);
+                if(population.size() > sizeOfPopulation/8)
+                    population = population.subList(0, sizeOfPopulation/8);
                 System.out.println(population.size());
             }
             summary(population, predictedOutput);
+            System.out.println("\n\n");
         }
     }
 

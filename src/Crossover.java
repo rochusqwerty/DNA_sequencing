@@ -56,6 +56,7 @@ public class Crossover {
                                 newChromo = new Chromosome();
                                 newChromo.setList_gens(newList1);
                                 newChromo.fix();
+                                newChromo.fitness_function();
                                 listOut.add(newChromo);
                             }
 
@@ -69,6 +70,7 @@ public class Crossover {
                                 newChromo = new Chromosome();
                                 newChromo.setList_gens(newList2);
                                 newChromo.fix();
+                                newChromo.fitness_function();
                                 listOut.add(newChromo);
                             }
                         }
