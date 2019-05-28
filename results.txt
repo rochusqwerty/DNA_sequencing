@@ -1,100 +1,35 @@
-ins/b_negatyw_los/68_400-80.txt
-98.125
-ins/b_negatyw_los/9_200-40.txt
-98.75
-ins/b_negatyw_los/25_500-100.txt
-97.25
-ins/b_negatyw_los/35_200-80.txt
-99.166664
-ins/b_negatyw_los/10_500-100.txt
-99.5
-ins/b_negatyw_los/55_300-60.txt
-97.91667
-ins/b_negatyw_los/55_300-120.txt
-100.0
-ins/b_negatyw_los/55_400-160.txt
-94.583336
-ins/b_negatyw_los/62_400-80.txt
-99.0625
-ins/b_negatyw_los/20_300-120.txt
-97.22222
-ins/b_negatyw_los/18_200-40.txt
-96.875
-ins/b_negatyw_los/53_500-200.txt
-98.333336
-ins/b_negatyw_los/25_500-200.txt
-97.66667
-ins/b_negatyw_los/58_300-60.txt
-97.083336
-ins/b_negatyw_los/9_200-80.txt
-99.166664
-ins/b_negatyw_los/55_400-80.txt
-97.1875
-ins/b_negatyw_los/53_500-100.txt
-97.75
-ins/b_negatyw_los/58_300-120.txt
-97.77778
-ins/b_negatyw_los/68_400-160.txt
-96.25
-ins/b_negatyw_los/35_200-40.txt
-98.125
-ins/b_negatyw_los/62_400-160.txt
-99.583336
-ins/b_negatyw_los/10_500-200.txt
-98.333336
-ins/b_negatyw_los/18_200-80.txt
-94.166664
-ins/b_negatyw_los/20_300-60.txt
-99.583336
-ins/b_pozyt_kon/20_300+30.txt
-89.33333
-ins/b_pozyt_kon/53_500+50.txt
-89.8
-ins/b_pozyt_kon/58_300+30.txt
-92.333336
-ins/b_pozyt_kon/35_200+20.txt
-94.0
-ins/b_pozyt_kon/55_400+40.txt
-89.75
-ins/b_pozyt_kon/10_500+50.txt
-88.6
-ins/b_pozyt_kon/25_500+50.txt
-90.0
-ins/b_pozyt_kon/62_400+40.txt
-92.75
-ins/b_pozyt_kon/55_300+30.txt
-92.666664
-ins/b_pozyt_kon/18_200+20.txt
-89.5
-ins/b_pozyt_kon/9_200+20.txt
-91.5
-ins/b_pozyt_kon/68_400+40.txt
-88.5
 ins/b_negatyw_powt/59_500-2.txt
+sizeOfSequence 509
+sizeOfPopulation 250
+sizeOfFirstPopulation 500
+numberOfCrossover 250
+98.99599
+43
+ins/b_negatyw_powt/59_500-2.txt
+sizeOfSequence 509
+sizeOfPopulation 250
+sizeOfFirstPopulation 500
+numberOfCrossover 250
+99.799194
+33
+ins/b_negatyw_powt/59_500-2.txt
+sizeOfSequence 509
+sizeOfPopulation 250
+sizeOfFirstPopulation 500
+numberOfCrossover 250
+99.799194
+39
+ins/b_negatyw_powt/59_500-2.txt
+sizeOfSequence 509
+sizeOfPopulation 250
+sizeOfFirstPopulation 500
+numberOfCrossover 250
+99.799194
+32
+ins/b_negatyw_powt/59_500-2.txt
+sizeOfSequence 509
+sizeOfPopulation 250
+sizeOfFirstPopulation 500
+numberOfCrossover 125
 98.79518
-ins/b_negatyw_powt/28_500-18.txt
-96.88796
-ins/b_negatyw_powt/113_500-8.txt
-99.39024
-ins/b_negatyw_powt/144_500-12.txt
-99.38525
-ins/b_negatyw_powt/34_500-32.txt
-97.4359
-ins/b_pozyt_los/18_200+80.txt
-100.0
-ins/b_pozyt_los/10_500+200.txt
-99.6
-ins/b_pozyt_los/58_300+120.txt
-99.333336
-ins/b_pozyt_los/55_400+160.txt
-99.25
-ins/b_pozyt_los/53_500+200.txt
-100.0
-ins/b_pozyt_los/68_400+160.txt
-100.0
-ins/b_pozyt_los/20_300+120.txt
-100.0
-ins/b_pozyt_los/9_200+80.txt
-100.0
-ins/b_pozyt_los/62_400+160.txt
-100.0
+17

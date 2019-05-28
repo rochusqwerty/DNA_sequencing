@@ -76,17 +76,19 @@ public class Main {
         return matrix;
     }
 
-    static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile) {
+    static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile, Long duration) {
         try {
             FileWriter fr = new FileWriter(outputFile, true);
+            fr.write(file + "\n");
             fr.write("sizeOfSequence " + sizeOfSequence +
                     "\nsizeOfPopulation "  + sizeOfPopulation +
                     "\nsizeOfFirstPopulation " + sizeOfFirstPopulation +"" +
                     "\nnumberOfCrossover " + numberOfCrossover + "\n");
-            fr.write(file + "\n");
-            float percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
+
+            float percent = ((float)counter(p.get(0).list_gens)/predictedOutput)*100;
             //System.out.println(percent);
             fr.write(percent + "\n");
+            fr.write(duration + "\n");
             fr.close();
         } catch (IOException e) {
             System.err.println("IOException: " + e.getMessage());
@@ -121,7 +123,15 @@ public class Main {
 
     public static void main(String[] args) {
         List<List<String>> listOfFiles = loadFilesAsList(args);
+
         File outputFile = new File("results.txt");
+        try {
+            FileWriter outFile = new FileWriter(outputFile, true);
+            outFile.close();
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+        }
+
         for (List<String> file : listOfFiles) {
             String[] output = file.get(1).split("\\.");
             output = output[0].split("\\_");
@@ -144,13 +154,18 @@ public class Main {
             } else {
                 predictedOutput = sizeOfSequence - err - 9;
             }
+
+
             List<Chromosome> population;
             matrix = createMatrixWeight(list);
             for(int pom = 0; pom<10; pom++) {
+
                 sizeOfPopulation = spectrum / 2;
                 sizeOfFirstPopulation = spectrum ;
                 numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (2 * pom);
                 numberOfCrossover = pom == 0 ? sizeOfPopulation : sizeOfPopulation / pom;
+
+                long startTime = System.nanoTime();
 
                 FirstOrder first = new FirstOrder();
                 population = first.create2();
@@ -169,9 +184,11 @@ public class Main {
                         population = population.subList(0, sizeOfPopulation);
                     System.out.println(population.size());
                 }
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime) / 1000000000;
                 summary(population, predictedOutput);
                 System.out.println("\n\n");
-                writeToFile(population, predictedOutput, allNameFile, outputFile);
+                writeToFile(population, predictedOutput, allNameFile, outputFile, duration);
             }
         }
     }
