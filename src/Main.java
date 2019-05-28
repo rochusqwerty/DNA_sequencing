@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Main {
     public static int[][] matrix;
-    public static int sizeOfSequence, sizeOfPopulation;
+    public static int sizeOfSequence, sizeOfPopulation, sizeOfFirstPopulation, numberOfCrossover;
     public static List<String> list = new ArrayList<>();
     public static List<List<Integer>> listOfSimilarity = new ArrayList<>();
     public static int numberOfMutation = 200;
@@ -68,31 +68,24 @@ public class Main {
                     matrix[i][j] = 2;
                 } else if (l.substring(0, 1).equals(l2.substring(9))) {
                     matrix[i][j] = 1;
+                } else {
+                    matrix[i][j] = 0;
                 }
             }
         }
         return matrix;
     }
 
-    static List<List<Integer>>  createListOfSimilarity(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            List<Integer> insideList = new ArrayList<>();
-            for (int j = 0; j < matrix.length; j++) {
-                if (matrix[i][j] == 9) {
-                    insideList.add(j);
-                }
-            }
-            listOfSimilarity.add(insideList);
-        }
-        return listOfSimilarity;
-    }
-
     static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile) {
         try {
             FileWriter fr = new FileWriter(outputFile, true);
+            fr.write("sizeOfSequence " + sizeOfSequence +
+                    "\nsizeOfPopulation "  + sizeOfPopulation +
+                    "\nsizeOfFirstPopulation " + sizeOfFirstPopulation +"" +
+                    "\nnumberOfCrossover " + numberOfCrossover + "\n");
             fr.write(file + "\n");
             float percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
-            System.out.println(percent);
+            //System.out.println(percent);
             fr.write(percent + "\n");
             fr.close();
         } catch (IOException e) {
@@ -142,8 +135,6 @@ public class Main {
             output = output[1].split("[-\\+]");
             int spectrum = Integer.parseInt(output[0]);
             int err = Integer.parseInt(output[1]);
-            sizeOfPopulation = spectrum * 4;
-            numberOfMutation = spectrum / 2;
             String allNameFile = file.get(0) + "/" + file.get(1);
             loadDataFromFile(allNameFile);
             System.out.println(allNameFile);
@@ -155,29 +146,33 @@ public class Main {
             }
             List<Chromosome> population;
             matrix = createMatrixWeight(list);
-            createListOfSimilarity(matrix);
+            for(int pom = 0; pom<10; pom++) {
+                sizeOfPopulation = spectrum / 2;
+                sizeOfFirstPopulation = spectrum ;
+                numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (2 * pom);
+                numberOfCrossover = pom == 0 ? sizeOfPopulation : sizeOfPopulation / pom;
 
-
-            FirstOrder first = new FirstOrder();
-            population = first.create2();
-            for (Chromosome chromo: population) {
-                chromo.fitness_function();
-            }
-            Collections.sort(population);
-            summary(population, predictedOutput);
-            for (int i=0; i<5; i++){
-                Crossover cross = new Crossover(population);
-                population = cross.cross();
-                Mutation mut = new Mutation(population);
-                population = mut.mutate();
+                FirstOrder first = new FirstOrder();
+                population = first.create2();
+                for (Chromosome chromo : population) {
+                    chromo.fitness_function();
+                }
                 Collections.sort(population);
-                if(population.size() > sizeOfPopulation/8)
-                    population = population.subList(0, sizeOfPopulation/8);
-                System.out.println(population.size());
+                summary(population, predictedOutput);
+                for (int i = 0; i < 5; i++) {
+                    Crossover cross = new Crossover(population);
+                    population = cross.cross();
+                    Mutation mut = new Mutation(population);
+                    population = mut.mutate();
+                    Collections.sort(population);
+                    if (population.size() > sizeOfPopulation)
+                        population = population.subList(0, sizeOfPopulation);
+                    System.out.println(population.size());
+                }
+                summary(population, predictedOutput);
+                System.out.println("\n\n");
+                writeToFile(population, predictedOutput, allNameFile, outputFile);
             }
-            summary(population, predictedOutput);
-            System.out.println("\n\n");
-            writeToFile(population, predictedOutput, allNameFile, outputFile);
         }
     }
 

@@ -17,21 +17,23 @@ public class Crossover {
         int min = 0, max, middle1, middle2,steps, sample, index;
         float bound = 0.2f;
         int randomNum1, randomNum2;
+        boolean add = false;
         List<Integer> chromo1, chromo2, newList1, newList2;
         Chromosome newChromo;
 
         max = listIn.size();
-        bound *= (float) max;
+//        bound *= (float) max;
 
-        for(int i = 0; i < bound; i++){
+        for(int i = 0; i < Main.numberOfCrossover; i++){
+            add= false;
             randomNum1 = ThreadLocalRandom.current().nextInt(min, max);
             chromo1 = new ArrayList<>(listIn.get(randomNum1).getList_gens());
 
             middle1 = chromo1.size() / 2;
-            sample = 5;
+//            sample = 5;
 
-            while(sample > 0) {
-                sample --;
+//            while(sample > 0) {
+//                sample --;
                 do {
                     randomNum2 = ThreadLocalRandom.current().nextInt(min, max);
                 } while (randomNum2 == randomNum1);
@@ -41,7 +43,6 @@ public class Crossover {
                 steps = chromo2.size();
                 middle2 = chromo2.size() / 2;
 
-                if((chromo2.size() > 2) && (chromo1.size() > 2)) {
                     for (int q = 0; q < steps; q++) {
                         index = middle2 + (q % 2 == 0 ? q / 2 : -(q / 2 + 1));
 
@@ -58,6 +59,7 @@ public class Crossover {
                                 newChromo.fix();
                                 newChromo.fitness_function();
                                 listOut.add(newChromo);
+                                add =true;
                             }
 
 
@@ -75,9 +77,31 @@ public class Crossover {
                             }
                         }
                     }
-                }
-            }
 
+//            }
+            if(!add) {
+                newList1 = new ArrayList<>(chromo1);
+                newList1 = newList1.subList(0, middle1);
+                newList2 = new ArrayList<>(chromo2);
+                newList2 = newList2.subList(middle2, chromo2.size());
+                newList1.addAll(newList2);
+                newChromo = new Chromosome();
+                newChromo.setList_gens(newList1);
+                newChromo.fix();
+                newChromo.fitness_function();
+                listOut.add(newChromo);
+
+                newList2 = new ArrayList<>(chromo2);
+                newList2 = newList2.subList(0, middle2);
+                newList1 = new ArrayList<>(chromo1);
+                newList1 = newList1.subList(middle1, chromo1.size());
+                newList2.addAll(newList1);
+                newChromo = new Chromosome();
+                newChromo.setList_gens(newList2);
+                newChromo.fix();
+                newChromo.fitness_function();
+                listOut.add(newChromo);
+            }
         }
 //        for (Chromosome chro: listIn) {
 //            System.out.println("Chro1: " + chro.getList_gens().size());
