@@ -79,14 +79,23 @@ public class Main {
     static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile) {
         try {
             FileWriter fr = new FileWriter(outputFile, true);
-            fr.write("sizeOfSequence " + sizeOfSequence +
-                    "\nsizeOfPopulation "  + sizeOfPopulation +
-                    "\nsizeOfFirstPopulation " + sizeOfFirstPopulation +"" +
-                    "\nnumberOfCrossover " + numberOfCrossover + "\n");
             fr.write(file + "\n");
             float percent = ((float)counter(p.get(1).list_gens)/predictedOutput)*100;
             //System.out.println(percent);
             fr.write(percent + "\n");
+            fr.close();
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+        }
+    }
+
+    static void writeHeader(File outputFile) {
+        try {
+            FileWriter fr = new FileWriter(outputFile, true);
+            fr.write("sizeOfSequence " + sizeOfSequence +
+                    "\nsizeOfPopulation "  + sizeOfPopulation +
+                    "\nsizeOfFirstPopulation " + sizeOfFirstPopulation +"" +
+                    "\nnumberOfCrossover " + numberOfCrossover + "\n");
             fr.close();
         } catch (IOException e) {
             System.err.println("IOException: " + e.getMessage());
@@ -146,7 +155,8 @@ public class Main {
             }
             List<Chromosome> population;
             matrix = createMatrixWeight(list);
-            for(int pom = 0; pom<10; pom++) {
+            for(int pom = 0; pom<2; pom++) {
+                writeHeader(outputFile);
                 sizeOfPopulation = spectrum / 2;
                 sizeOfFirstPopulation = spectrum ;
                 numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (2 * pom);
