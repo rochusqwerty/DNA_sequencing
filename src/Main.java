@@ -76,15 +76,10 @@ public class Main {
         return matrix;
     }
 
-    static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile, Long duration) {
+    static void writeToFile( List<Chromosome> p, int predictedOutput, String file, File outputFile, double duration) {
         try {
             FileWriter fr = new FileWriter(outputFile, true);
             fr.write(file + "\n");
-            fr.write(sizeOfPopulation + "\n"
-                            + sizeOfFirstPopulation +"\n"
-                            + numberOfMutation +"\n"
-                            + numberOfCrossover + "\n");
-
             float percent = ((float)counter(p.get(0).list_gens)/predictedOutput)*100;
             //System.out.println(percent);
             fr.write(percent + "\n");
@@ -161,12 +156,11 @@ public class Main {
 
             List<Chromosome> population;
             matrix = createMatrixWeight(list);
-            for(int pom = 0; pom<10; pom++) {
-
+            int pom = 0;
                 sizeOfPopulation = spectrum / 2;
                 sizeOfFirstPopulation = spectrum;
-                numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (10 * pom);
-                numberOfCrossover = pom == 0 ? sizeOfPopulation : sizeOfPopulation / pom;
+                numberOfMutation = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (pom);
+                numberOfCrossover = pom == 0 ? sizeOfPopulation : sizeOfPopulation / (pom);
 
                 long startTime = System.nanoTime();
 
@@ -176,8 +170,7 @@ public class Main {
                     chromo.fitness_function();
                 }
                 Collections.sort(population);
-                summary(population, predictedOutput);
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 6; i++) {
                     Crossover cross = new Crossover(population);
                     population = cross.cross();
                     Mutation mut = new Mutation(population);
@@ -185,14 +178,14 @@ public class Main {
                     Collections.sort(population);
                     if (population.size() > sizeOfPopulation)
                         population = population.subList(0, sizeOfPopulation);
-                    System.out.println(population.size());
+                    float percent = ((float) counter(population.get(0).list_gens) / predictedOutput) * 100;
+                    if (percent == 100.0)
+                        break;
                 }
                 long endTime = System.nanoTime();
-                long duration = (endTime - startTime) / 1000000000;
-                summary(population, predictedOutput);
-                System.out.println("\n\n");
+                double duration = (double) ((endTime - startTime) / 1000000000.0);
                 writeToFile(population, predictedOutput, name, outputFile, duration);
-            }
+
         }
     }
 
